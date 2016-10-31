@@ -113,12 +113,13 @@
 						return;
 					}
 					$ionicLoading.show();
-					ajaxService.post('test-order',{
-						'customerid':$scope.customer.id,
-						'userid':$scope.auth.id
+					ajaxService.post('place-order',{
+						'customerid':parseInt($scope.customer.CustomerID),
+						'userid':$scope.auth.id,
+						'cart':$scope.cart
 					},function(response){
 							$ionicLoading.hide();
-						 if(response.data.status){
+						 if(response.data.succsess){
 							 $scope.orderSuccess.show();
 							 	$scope.cart=[];
 		 						dataTransferService.setData('cart',$scope.cart);

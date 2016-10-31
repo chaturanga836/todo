@@ -71,6 +71,7 @@ angular.module('starter', ['ionic','satellizer'])
         $httpProvider.defaults.useXDomain = true;
         $httpProvider.defaults.withCredentials = true;
         delete $httpProvider.defaults.headers.common['X-Requested-With'];
+        delete $httpProvider.defaults.headers.common['Access-Control-Request-Headers'];
         delete $httpProvider.defaults.headers.common['origin'];
     })
 
@@ -110,25 +111,31 @@ angular.module('starter', ['ionic','satellizer'])
         // invocation.send();
       $http({
         method: 'POST',
-        url:ApiEndpoint.url+url
+        url:ApiEndpoint.url+url,
+        withCredentials:false,
+        headers:{
+          'Access-Control-Allow-Methods':'POST, GET, OPTION,PUT,DELETE',
+          'Access-Control-Allow-Origin': '*',
+        },
+        data:data
       }).then(
         function(response){
-          console.log("here")
+          success(response);
         },function(response){
-
+          error(response);
         }
         //function(response){success(response)},
         //function(response){error(response)}
       )
 
-      $http.post(ApiEndpoint.url+url,data,{
-       headers: {
-             'Accept' : 'application/json, text/plain, */*',
-            'Content-Type':'application/json;charset=UTF-8',
-            'Access-Control-Allow-Origin': '*',
-            'Authorization':'*'
-          }
-      }).then(function(response){ success(response)},function(response){error(response)})
+      // $http.post(ApiEndpoint.url+url,data,{
+      //  headers: {
+      //        'Accept' : 'application/json, text/plain, */*',
+      //       'Content-Type':'application/json;charset=UTF-8',
+      //       'Access-Control-Allow-Origin': '*',
+      //       'Authorization':'*'
+      //     }
+      // }).then(function(response){ success(response)},function(response){error(response)})
     }catch(error){
 
     }
