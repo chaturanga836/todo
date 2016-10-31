@@ -4,14 +4,32 @@
   app.controller('ItemsController',
 	['$scope','$http','$state','$ionicHistory','dataTransferService','$ionicPopup','ajaxService','$ionicModal',
     function($scope,$http,$state,$ionicHistory,dataTransferService,$ionicPopup,ajaxService,$ionicModal){
-       $scope.customer=dataTransferService.getData('customer');
+
 
        $scope.items=[];
+			 $scope.cart=[];
+			 $scope.totalPrice=0;
 			 $scope.selectedItme=null;
+			 $scope.onloading=false;
 			 $scope.search={
 				 keyword:'',
 				 show:false
 			 }
+
+			
+
+			$scope.customer=dataTransferService.getData('customer');
+			$scope.cart=dataTransferService.getData('cart');
+
+			 if($scope.cart==null || $scope.cart.length<1){
+				 $scope.cart=[];
+				 $scope.totalPrice=0;
+			 }else{
+				 for(var i in $scope.items){
+					 $scope.totalPrice+=($scope.items[i].wsale*$scope.items[i].amount);
+				 }
+			 }
+
 
 			 $scope.showerror={
 				 show:false,
@@ -21,7 +39,7 @@
 			 $scope.showSearch=function(obj){
 				 $scope.search.show=obj;
 			 }
-      $scope.cart=[];
+
       var ids=[]
        $scope.addToCart=function(obj){
 				  $scope.showerror.show=false;
@@ -52,7 +70,7 @@
              $scope.items.splice(i,1);
            }
          }
-
+				 $scope.totalPrice+=(obj.wsale*obj.amount);
 				 $scope.itmepopup.hide();
 				 $scope.selectedItme=null;
        }
@@ -81,15 +99,17 @@
 				 if($scope.search.keyword==''|| $scope.search.keyword==null){
 					 return;
 				 }
+				 $scope.onloading=true;
          ajaxService.get('search-items/'+$scope.search.keyword,
          function(response){
+					 $scope.onloading=false;
            if(response.data.items.length>0){
              $scope.items=[];
              $scope.items=response.data.items;
            }
          },
          function(response){
-
+					 $scope.onloading=false;
          }
        );
        }

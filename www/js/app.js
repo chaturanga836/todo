@@ -124,18 +124,8 @@ angular.module('starter', ['ionic','satellizer'])
         },function(response){
           error(response);
         }
-        //function(response){success(response)},
-        //function(response){error(response)}
-      )
 
-      // $http.post(ApiEndpoint.url+url,data,{
-      //  headers: {
-      //        'Accept' : 'application/json, text/plain, */*',
-      //       'Content-Type':'application/json;charset=UTF-8',
-      //       'Access-Control-Allow-Origin': '*',
-      //       'Authorization':'*'
-      //     }
-      // }).then(function(response){ success(response)},function(response){error(response)})
+      )
     }catch(error){
 
     }

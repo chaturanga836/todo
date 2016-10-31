@@ -8,6 +8,7 @@
   </label>
 </div>
 <div class="content has-header">
+  <center ng-if="onloading"><ion-spinner class="spinner-calm"></ion-spinner></center>
   <div class="card" ng-if="customers.length<1">
   <div class="item item-text-wrap">
     <i>Search a Customer!</i>

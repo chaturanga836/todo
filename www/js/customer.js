@@ -7,24 +7,20 @@
 
 			$scope.customers=[];
 			$scope.keyword="";
-		
-			var customerdata=[
-			  {id:1,first_name:'Pandula',last_name:'Basnayaka'},
-			  {id:2,first_name:'Buddhika',last_name:'Chathuranga'},
-			  {id:3,first_name:'Shanu',last_name:'Balasooriya'},
-			  {id:4,first_name:'Pasindu',last_name:'Priyantha'},
-			  {id:5,first_name:'Gimhan',last_name:'Jayasinghe'}
+			$scope.onloading=false;
+			$scope.auth=dataTransferService.getData('auth');
 
-			];
+			var d=dataTransferService.getData('customer');
+
 
 			$scope.loadCustomers=function(){
-				//console.log("hhh")
 					if($scope.keyword=="" ||$scope.keyword==null){
 						return;
 					}
+					$scope.onloading=true;
 					ajaxService.get('search-customer/'+$scope.keyword,
 					function(response){
-
+						$scope.onloading=false;
 						if(response.data.customers.length>0){
 							$scope.customers=[];
 							for(var i in response.data.customers){
@@ -33,19 +29,8 @@
 						}
 
 					},function(resp){
-
+						$scope.onloading=false;
 					})
-				var patt = new RegExp("\\b"+$scope.keyword,"ig")
-				if($scope.keyword.length<1){
-					return;
-				}
-					$scope.customers=[];
-				for(var i in customerdata){
-					var fullName=customerdata[i].first_name+' '+customerdata[i].last_name;
-					if(patt.test(fullName)){
-						$scope.customers.push(customerdata[i]);
-					}
-				}
 			}
 
 			$scope.selectcustomer=function(obj){

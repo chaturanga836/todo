@@ -9,13 +9,22 @@
       </label>
     <a ng-if="!search.show" class="button icon-right ion-ios-search button-clear button-dark" ng-click="showSearch(true)"></a>
     <a ng-if="search.show" class="button icon-right ion-ios-close-empty button-clear button-dark" ng-click="showSearch(false)"></a>
+
 	</ion-header-bar>
+  <div class="bar bar-subheader">
+        <div class="row">
+          <div class="col">Total Items <b class="positive">{{cart.length}}</b></div>
+          <div class="col">Total Price <i class="balanced">{{ totalPrice | currency:"Rs: "}}<i></div>
+        </div>
+</div>
   <ion-content>
 
+
+<center ng-if="onloading"><ion-spinner class="spinner-calm"></ion-spinner></center>
     <div class="list list-inset">
       <div class="card" ng-if="customers.length<1">
         <div class="item item-text-wrap">
-          Search a Customer!
+          Search Items!
         </div>
       </div>
       <div class="card" ng-repeat="item in items">

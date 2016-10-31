@@ -38,18 +38,16 @@
 
     </div>
   </ion-content>
-  <ion-footer-bar>
-    <div class="row" ng-if="cart.length>0">
-      <div class="col col-50">
-        <button class="button button-block button-positive" ng-click="placeOrder()">
-           Save order
-        </button>
-      </div>
-      <div class="col col-50">
-        <button class="button button-block button-assertive" ng-click="cancelOrder()">
-          Cancel order
-        </button>
-      </div>
-    </div>
-  </ion-footer-bar>
+  <ion-content class="has-footer">
+</ion-content>
+<ion-footer-bar align-title="left" class="bar-light">
+  <div class="buttons  balanced">
+    <button class="button button-positive"  ng-click="placeOrder()">Save order</button>
+  </div>
+  <h1 class="title">Save/ Cancel</h1>
+  <div class="buttons assertive">
+    <button class="button button-assertive" ng-click="cancelOrder()">Cancel order</button>
+  </div>
+</ion-footer-bar>
+
 </ion-pane>

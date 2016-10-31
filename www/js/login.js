@@ -11,12 +11,13 @@
 		'$ionicLoading',
 		'dataTransferService',
 		'$ionicModal',
-		function($scope,$http,$state,$ionicHistory,$auth,$ionicLoading,dataTransferService,$ionicModal){
+		'$ionicPopup',
+		function($scope,$http,$state,$ionicHistory,$auth,$ionicLoading,dataTransferService,$ionicModal,$ionicPopup){
 
 
 		$scope.credentials={
-			username:'',
-			password:''
+			username:'System Manager',
+			password:'0107'
 		}
 
 		$ionicModal.fromTemplateUrl('templates/models/loginpopup.html',{
@@ -61,7 +62,19 @@
 
 
 			},function(ERR){
+
 				$ionicLoading.hide();
+				var errpop=$ionicPopup.show({
+					title: 'Someting went wrong !',
+					template: '<p class="ion-error-msg">Check your internet connection !</p>',
+					buttons: [{
+						text: 'ok',
+						type:'button-positive',
+						onTap: function(e) {
+							errpop.close();
+						}
+					 }]
+				});
 			})
 		}
 	}])
