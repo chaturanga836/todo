@@ -1,0 +1,55 @@
+<ion-pane ng-controller="CartController">
+  <ion-header-bar class="bar-stable item-input-inset">
+    <a class="button icon-left ion-ios-arrow-back button-clear button-dark" ng-click="goBack()"></a>
+      <h6 class="title">{{customer.CusName}}</h6>
+  </ion-header-bar>
+  <ion-content>
+    <div class="list list-inset">
+      <div class="card" ng-repeat="item in cart">
+        <div class="item item-text-wrap">
+          <div class="row">
+            <div class="col"><b class="positive">Name: </b></div>
+            <div class="col"><i class="balanced">{{item.name}}</i></div>
+          </div>
+          <div class="row">
+            <div class="col"><b class="positive">Whole Sale: </b></div>
+            <div class="col"><i class="balanced">{{item.wsale}}</i></div>
+          </div>
+          <div class="row">
+            <div class="col"><b class="positive">Order Qty:</b></div>
+            <div class="col"><i class="balanced">{{item.amount}}</i></div>
+          </div>
+          <div class="row">
+            <div class="col"><b class="positive">Free Qty: </b></div>
+            <div class="col"><i class="balanced">{{item.freeqty}}</i></div>
+          </div>
+          <div class="row">
+            <div class="col"><b class="positive">Price (Rs): </b></div>
+            <div class="col"><i class="balanced">{{item.amount*item.wsale}}</i></div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <i class="ion-edit ion-float-right ion-icon-medium positive" ng-click="editItem(item)"></i>
+              <i class="ion-close-circled ion-icon-medium assertive" ng-click="removeFromCart(item)"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </ion-content>
+  <ion-footer-bar>
+    <div class="row" ng-if="cart.length>0">
+      <div class="col col-50">
+        <button class="button button-block button-positive" ng-click="placeOrder()">
+           Save order
+        </button>
+      </div>
+      <div class="col col-50">
+        <button class="button button-block button-assertive" ng-click="cancelOrder()">
+          Cancel order
+        </button>
+      </div>
+    </div>
+  </ion-footer-bar>
+</ion-pane>

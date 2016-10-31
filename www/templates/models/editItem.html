@@ -1,0 +1,65 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title">
+      {{selectedItem.name}}<b class="notification-ion assertive" ng-if="cart.length>0">{{cart.length}}</b>
+      <i class="ion-close ion-float-right ion-icon-medium" ng-click="cancelEdit()"></i>
+    </h1>
+  </ion-header-bar>
+  <ion-content>
+      <div class="list list-inset">
+          <div class="row">
+            <div class="col"><b class="positive">Name</b>:</div>
+            <div class="col"><i class="balanced">{{selectedItem.name}}</i></div>
+          </div>
+          <div class="row">
+            <div class="col"><b class="positive">Bonus</b>:</div>
+            <div class="col"><i class="balanced">{{selectedItem.Bonus}}</i></div>
+          </div>
+          <div class="row">
+            <div class="col"><b class="positive">Whole Sale</b>:</div>
+            <div class="col"><i class="balanced">{{selectedItem.wsale}}</i></div>
+          </div>
+          <div class="row">
+            <div class="col"><b class="positive">Available Qty</b>:</div>
+            <div class="col"><i class="balanced">{{selectedItem.qtyInHand}}</i></div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label class="item item-input">
+                <span class="input-label">Order Qty</span>
+                <input type="number" ng-model="selectedItem.amount" placeholder="0" />
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label class="item item-input">
+                  <span class="input-label">Free Qty</span>
+                <input type="number" ng-model="selectedItem.freeqty" placeholder="0"/>
+              </label>
+            </div>
+          </div>
+        <div class="row">
+          <div class="col">
+            <p ng-show="showerror.show" class="ion-error-msg">{{showerror.message}}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="padding">
+                <button class="button button-block button-positive" ng-click="saveToCart(selectedItem)">
+                  Save
+                </button>
+                <button class="button button-block button-assertive" ng-click="cancelEdit()">
+                    Cancel
+                </button>
+          </div> 
+          </div>
+
+        </div>
+      </div>
+
+
+
+  </ion-content>
+</ion-modal-view>

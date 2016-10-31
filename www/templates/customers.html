@@ -1,0 +1,30 @@
+
+<ion-content class="content has-header padding" ng-controller="CustomerController">
+
+<div class="bar bar-header item-input-inset">
+  <label class="item-input-wrapper">
+    <i class="icon ion-ios-search placeholder-icon"></i>
+    <input type="text" placeholder="Search" ng-model="keyword" ng-change="loadCustomers()">
+  </label>
+</div>
+<div class="content has-header">
+  <div class="card" ng-if="customers.length<1">
+  <div class="item item-text-wrap">
+    <i>Search a Customer!</i>
+    <span></span>
+  </div>
+</div>
+  <div class="list">
+    <div class="customer card" ng-repeat="customer in customers">
+      <div class="item item-text-wrap" ng-click="selectcustomer(customer)">
+         <div class="col">{{customer.CusName}}</div>
+         <div class="col">{{customer.ContactNumber}}</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="padding">
+  </div>
+</div>
+
+</ion-content>

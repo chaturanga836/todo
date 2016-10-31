@@ -1,0 +1,40 @@
+/* Empty. Add your own CSS if you like */
+
+.ion-icon-medium{
+  font-size: 25px;
+}
+
+.ion-float-right{
+  float: right;
+}
+
+.ion-float-left{
+  float: left;
+}
+
+.notification-ion{
+  background-color: #ef473a;
+  color:#fff;
+  text-align: center;
+  border-radius: 30%;
+  padding:1px 4px 1px 4px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.ion-error-msg{
+  text-align: center;
+  background-color: #ff4d4d;
+  color:#fff;
+  padding:1px 4px 1px 4px;
+  width:100%
+}
+
+.customer.ng-enter {
+  -webkit-animation-delay:200ms;
+ animation-delay:200ms;
+
+ /* override to make sure it's not inherited from other styles */
+ -webkit-animation-duration:0;
+ animation-duration:0;
+}

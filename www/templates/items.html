@@ -1,0 +1,53 @@
+
+<ion-pane ng-controller="ItemsController">
+  <ion-header-bar class="bar-stable item-input-inset">
+    <a class="button icon-left ion-ios-arrow-back button-clear button-dark" ng-click="goBack()"></a>
+      <h6 class="title" ng-if="!search.show">{{customer.CusName}}</h6>
+      <label class="item-input-wrapper" ng-if="search.show">
+        <i class="icon ion-ios-search placeholder-icon"></i>
+        <input type="text" placeholder="Search" ng-model="search.keyword" ng-change="searchItems()">
+      </label>
+    <a ng-if="!search.show" class="button icon-right ion-ios-search button-clear button-dark" ng-click="showSearch(true)"></a>
+    <a ng-if="search.show" class="button icon-right ion-ios-close-empty button-clear button-dark" ng-click="showSearch(false)"></a>
+	</ion-header-bar>
+  <ion-content>
+
+    <div class="list list-inset">
+      <div class="card" ng-if="customers.length<1">
+        <div class="item item-text-wrap">
+          Search a Customer!
+        </div>
+      </div>
+      <div class="card" ng-repeat="item in items">
+        <div class="item item-text-wrap" ng-click="selectItem(item)">
+          <div class="row">
+            <div class="col">
+              <b class="positive">ProductID</b>:<br/>
+              <b class="positive">Name</b>:<br/>
+              <b class="positive">WS Price</b>:
+            </div>
+           <div class="col">
+             <i class="balanced">{{item.id}}</i><br/>
+             <i class="balanced">{{item.name}}</i><br/>
+             <i class="balanced">{{item.wsale}}</i>
+           </div>
+         </div>
+        </div>
+      </div>
+
+    </div>
+  </ion-content>
+  <ion-footer-bar>
+    <div class="row" ng-if="cart.length>0">
+      <div class="col col-50">
+        <i class="ion-checkmark-circled ion-icon-medium balanced ion-float-right" ng-click="toCart()"></i>
+      </div>
+      <div class="col col-50">
+        <i class="ion-close-circled ion-icon-medium assertive" ng-click="clearCart()"></i>
+      </div>
+    </div>
+  </ion-footer-bar>
+
+
+
+</ion-pane>
