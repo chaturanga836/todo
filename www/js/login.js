@@ -62,19 +62,34 @@
 
 
 			},function(ERR){
+					$ionicLoading.hide();
+				if(ERR.status=401){
+					var errpop=$ionicPopup.show({
+						title: 'Invalid Credential !',
+						template: '<p class="dark">invalid username or password !</p>',
+						buttons: [{
+							text: 'ok',
+							type:'button-positive',
+							onTap: function(e) {
+								errpop.close();
+							}
+						 }]
+					});
+				}else{
+					var errpop=$ionicPopup.show({
+						title: 'Someting went wrong !',
+						template: '<p class="ion-error-msg">Check your internet connection !</p>',
+						buttons: [{
+							text: 'ok',
+							type:'button-positive',
+							onTap: function(e) {
+								errpop.close();
+							}
+						 }]
+					});
+				}
 
-				$ionicLoading.hide();
-				var errpop=$ionicPopup.show({
-					title: 'Someting went wrong !',
-					template: '<p class="ion-error-msg">Check your internet connection !</p>',
-					buttons: [{
-						text: 'ok',
-						type:'button-positive',
-						onTap: function(e) {
-							errpop.close();
-						}
-					 }]
-				});
+
 			})
 		}
 	}])

@@ -17,7 +17,7 @@
           <div class="col">Total Price <i class="balanced">{{ totalPrice | currency:"Rs: "}}<i></div>
         </div>
 </div>
-  <ion-content>
+<ion-content class="has-footer">
 
 
 <center ng-if="onloading"><ion-spinner class="spinner-calm"></ion-spinner></center>
@@ -46,15 +46,22 @@
 
     </div>
   </ion-content>
-  <ion-footer-bar>
-    <div class="row" ng-if="cart.length>0">
+  <ion-footer-bar class="bar-light" ng-if="cart.length>0">
+    <div class="buttons  balanced">
+      <button class="button button-positive"  ng-click="toCart()">To Cart</button>
+    </div>
+    <h4 class="title"><i class="balanced">Cart:</i><b class="assertive">{{cart.length}}</b></h4>
+    <div class="buttons assertive">
+      <button class="button button-assertive" ng-click="clearCart()">Clear Cart</button>
+    </div>
+    <!--div class="row" ng-if="cart.length>0">
       <div class="col col-50">
         <i class="ion-checkmark-circled ion-icon-medium balanced ion-float-right" ng-click="toCart()"></i>
       </div>
       <div class="col col-50">
         <i class="ion-close-circled ion-icon-medium assertive" ng-click="clearCart()"></i>
       </div>
-    </div>
+    </div-->
   </ion-footer-bar>
 
 
