@@ -2,8 +2,8 @@
 	var app= angular.module('starter');
 
   app.controller('ItemsController',
-	['$scope','$http','$state','$ionicHistory','dataTransferService','$ionicPopup','ajaxService','$ionicModal',
-    function($scope,$http,$state,$ionicHistory,dataTransferService,$ionicPopup,ajaxService,$ionicModal){
+	['$scope','$http','$state','$ionicHistory','dataTransferService','$ionicPopup','ajaxService','$ionicModal','$stateParams',
+    function($scope,$http,$state,$ionicHistory,dataTransferService,$ionicPopup,ajaxService,$ionicModal,$stateParams){
 
 
        $scope.items=[];
@@ -16,11 +16,10 @@
 				 show:false
 			 }
 
-			
+
 
 			$scope.customer=dataTransferService.getData('customer');
 			$scope.cart=dataTransferService.getData('cart');
-
 			 if($scope.cart==null || $scope.cart.length<1){
 				 $scope.cart=[];
 				 $scope.totalPrice=0;
@@ -29,6 +28,19 @@
 					 $scope.totalPrice+=($scope.items[i].wsale*$scope.items[i].amount);
 				 }
 			 }
+
+			   $scope.$on('$ionicView.beforeEnter', function() {
+					 $scope.customer=dataTransferService.getData('customer');
+					 $scope.cart=dataTransferService.getData('cart');
+					 if($scope.cart==null || $scope.cart.length<1){
+						 $scope.cart=[];
+						 $scope.totalPrice=0;
+					 }else{
+						 for(var i in $scope.items){
+							 $scope.totalPrice+=($scope.items[i].wsale*$scope.items[i].amount);
+						 }
+					 }
+				 });
 
 
 			 $scope.showerror={

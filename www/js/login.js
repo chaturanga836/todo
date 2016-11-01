@@ -16,8 +16,8 @@
 
 
 		$scope.credentials={
-			username:'System Manager',
-			password:'0107'
+			username:'',
+			password:''
 		}
 
 		$ionicModal.fromTemplateUrl('templates/models/loginpopup.html',{

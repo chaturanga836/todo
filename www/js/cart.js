@@ -17,6 +17,7 @@
 			$scope.auth=dataTransferService.getData('auth');
       $scope.$on('$ionicView.beforeEnter', function() {
 					$scope.cart=dataTransferService.getData('cart');
+					$scope.customer=dataTransferService.getData('customer');
             if($scope.cart==undefined || $scope.cart==null || typeof $scope.cart!=='object'  ||$scope.cart.length<1){
               $ionicPopup.show({
                 title: 'Empty Order!',

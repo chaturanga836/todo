@@ -3,7 +3,7 @@
     <a class="button icon-left ion-ios-arrow-back button-clear button-dark" ng-click="goBack()"></a>
       <h6 class="title">{{customer.CusName}}</h6>
   </ion-header-bar>
-  <ion-content>
+  <ion-content class="has-footer">
     <div class="list list-inset">
       <div class="card" ng-repeat="item in cart">
         <div class="item item-text-wrap">
@@ -38,8 +38,6 @@
 
     </div>
   </ion-content>
-  <ion-content class="has-footer">
-</ion-content>
 <ion-footer-bar align-title="left" class="bar-light">
   <div class="buttons  balanced">
     <button class="button button-positive"  ng-click="placeOrder()">Save order</button>
