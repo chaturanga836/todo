@@ -2,11 +2,32 @@
 	var app= angular.module('starter');
 
   app.controller('ItemsController',
-	['$scope','$http','$state','$ionicHistory','dataTransferService','$ionicPopup','ajaxService','$ionicModal','$stateParams',
-    function($scope,$http,$state,$ionicHistory,dataTransferService,$ionicPopup,ajaxService,$ionicModal,$stateParams){
+	[
+		'$scope',
+		'$http',
+		'$state',
+		'$ionicHistory',
+		'dataTransferService',
+		'$ionicPopup',
+		'ajaxService',
+		'$ionicModal',
+		'$stateParams',
+		'$ionicScrollDelegate',
+    function(
+			$scope,
+			$http,
+			$state,
+			$ionicHistory,
+			dataTransferService,
+			$ionicPopup,
+			ajaxService,
+			$ionicModal,
+			$stateParams,
+			$ionicScrollDelegate){
 
 
        $scope.items=[];
+			 var page=1;
 			 $scope.cart=[];
 			 $scope.totalPrice=0;
 			 $scope.selectedItme=null;
@@ -16,31 +37,71 @@
 				 show:false
 			 }
 
+			$scope.customer=dataTransferService.customer;
+			$scope.cart=dataTransferService.cart;
+			$scope.totalPrice=dataTransferService.totalPrice;
+
+			$scope.$watch(
+				function(){
+					return dataTransferService.totalPrice;
+				},
+				function(newvla,oldval){
+					$scope.totalPrice=dataTransferService.totalPrice;
+				},true
+			);
+
+			var awtItem=function(){
+				if($scope.onloading){
+					return;
+				}
+				$scope.onloading=true;
+				ajaxService.get('get-all-items/'+page,
+					 function(response){
+							$scope.onloading=false;
+						 for(var i in response.data.items){
+							 dataTransferService.availableItems.push(response.data.items[i])
+							 $scope.items.push(response.data.items[i]);
+						 }
+						 if(response.data.items.length>0){
+							 page+=1;
+						 }
+					 },
+					 function(response){ $scope.onloading=false;}
+				 );
+			}
+			awtItem();
+			var r=$ionicScrollDelegate.getScrollView();
 
 
-			$scope.customer=dataTransferService.getData('customer');
-			$scope.cart=dataTransferService.getData('cart');
+			$scope.getScrolPosition=function(){
+				if($ionicScrollDelegate.getScrollPosition().top>=$ionicScrollDelegate.getScrollView().__maxScrollTop){
+					awtItem();
+				}
+
+			}
+
+			$scope.$watch(
+				function(){ return dataTransferService.cart},
+				function(newVal,oldVal){
+					$scope.cart=dataTransferService.cart;
+				},true
+			)
+
+
 			 if($scope.cart==null || $scope.cart.length<1){
 				 $scope.cart=[];
-				 $scope.totalPrice=0;
+				 dataTransferService.totalPrice=0;
 			 }else{
 				 for(var i in $scope.items){
-					 $scope.totalPrice+=($scope.items[i].wsale*$scope.items[i].amount);
+					 dataTransferService.totalPrice+=($scope.items[i].wsale*$scope.items[i].amount);
 				 }
 			 }
 
-			   $scope.$on('$ionicView.beforeEnter', function() {
-					 $scope.customer=dataTransferService.getData('customer');
-					 $scope.cart=dataTransferService.getData('cart');
-					 if($scope.cart==null || $scope.cart.length<1){
-						 $scope.cart=[];
-						 $scope.totalPrice=0;
-					 }else{
-						 for(var i in $scope.items){
-							 $scope.totalPrice+=($scope.items[i].wsale*$scope.items[i].amount);
-						 }
-					 }
-				 });
+
+
+
+
+
 
 
 			 $scope.showerror={
@@ -56,7 +117,7 @@
        $scope.addToCart=function(obj){
 				  $scope.showerror.show=false;
 					$scope.showerror.message='';
-				 var flag=false;
+				 	var flag=false;
 				 if(obj.amount==undefined || obj.amount<1){
 					 $scope.showerror.show=true;
 					 $scope.showerror.message="Empty order!"
@@ -64,9 +125,9 @@
 				 }
 
 
-				for(var j in $scope.cart){
-					if($scope.cart[j].id==obj.id){
-						$scope.cart[j]=obj;
+				for(var j in dataTransferService.cart){
+					if(dataTransferService.cart[j].id==obj.id){
+						dataTransferService.cart[j]=obj;
 						flag=true;
 						break;
 					}
@@ -76,13 +137,8 @@
 					$scope.cart.push(obj);
 				}
 
-         dataTransferService.setData('cart',$scope.cart);
-         for(var i in $scope.items){
-           if($scope.items[i].id==obj.id){
-             $scope.items.splice(i,1);
-           }
-         }
-				 $scope.totalPrice+=(obj.wsale*obj.amount);
+         //dataTransferService.setData('cart',$scope.cart);
+				 dataTransferService.totalPrice+=(obj.wsale*obj.amount);
 				 $scope.itmepopup.hide();
 				 $scope.selectedItme=null;
        }
@@ -93,6 +149,7 @@
 			 }
 
 			 $scope.selectItem=function(itme){
+
 				 $scope.selectedItem=itme
 				  $scope.itmepopup.show();
 
@@ -109,6 +166,7 @@
 
        $scope.searchItems=function(){
 				 if($scope.search.keyword==''|| $scope.search.keyword==null){
+					 $scope.items=dataTransferService.availableItems;
 					 return;
 				 }
 				 $scope.onloading=true;
@@ -143,7 +201,9 @@
        }
 
       $scope.clearCart=function(){
-         dataTransferService.setData('cart',[]);
+				dataTransferService.cart=[];
+				dataTransferService.totalPrice=0;
+         //dataTransferService.setData('cart',[]);
          ids=[];
       }
 

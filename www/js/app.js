@@ -38,12 +38,12 @@ angular.module('starter', ['ionic','satellizer'])
 })
 
 .constant('ApiEndpoint', {
-  url: 'http://test.senitlo.com/api/'
+  url: 'http://primium.senitlo.com/api/'
 })
 
 .config(function($stateProvider, $urlRouterProvider,$httpProvider,$authProvider) {
 
-  $authProvider.loginUrl = 'http://test.senitlo.com/api/login';
+  $authProvider.loginUrl = 'http://primium.senitlo.com/api/login';
 
   $urlRouterProvider.otherwise('/auth');
         $stateProvider
@@ -66,6 +66,11 @@ angular.module('starter', ['ionic','satellizer'])
                 url: "/cart",
                 templateUrl: "templates/cart.html",
                 controller: "CartController"
+            })
+            .state('report', {
+                url: "/report",
+                templateUrl: "templates/myreport.html",
+                controller: "ReportController"
             });
         $urlRouterProvider.otherwise('/');
         $httpProvider.defaults.useXDomain = true;
@@ -97,6 +102,11 @@ angular.module('starter', ['ionic','satellizer'])
 
    return null;
  }
+
+ this.totalPrice=0;
+ this.cart=[];
+ this.customer=null;
+ this.availableItems=[];
 
 })
 .service('ajaxService',function($http,ApiEndpoint,$ionicPopup){
@@ -135,7 +145,15 @@ angular.module('starter', ['ionic','satellizer'])
 
     try{
 
-      $http.jsonp(ApiEndpoint.url+url+'?callback=JSON_CALLBACK')
+      $http({
+        method: 'GET',
+        url:ApiEndpoint.url+url,
+        withCredentials:false,
+        headers:{
+          'Access-Control-Allow-Methods':'POST, GET, OPTION,PUT,DELETE',
+          'Access-Control-Allow-Origin': '*',
+        }
+      })
       .then(
         function(response){ success(response); },
         function(response){

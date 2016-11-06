@@ -1,9 +1,15 @@
-<ion-pane ng-controller="CartController">
+<ion-pane>
   <ion-header-bar class="bar-stable item-input-inset">
     <a class="button icon-left ion-ios-arrow-back button-clear button-dark" ng-click="goBack()"></a>
       <h6 class="title">{{customer.CusName}}</h6>
   </ion-header-bar>
-  <ion-content class="has-footer">
+  <div class="bar bar-subheader">
+        <div class="row">
+          <div class="col">Total Items <b class="positive">{{cart.length}}</b></div>
+          <div class="col">Total Price <i class="balanced">{{ totalPrice | currency:"Rs: "}}<i></div>
+        </div>
+</div>
+  <ion-content class="has-header has-subheader has-footer">
     <div class="list list-inset">
       <div class="card" ng-repeat="item in cart">
         <div class="item item-text-wrap">
@@ -28,10 +34,14 @@
             <div class="col"><i class="balanced">{{item.amount*item.wsale}}</i></div>
           </div>
           <div class="row">
-            <div class="col">
+            <div class="button-bar">
+              <a class="button button-balanced"  ng-click="editItem(item)">Edit</a>
+              <a class="button button-assertive" ng-click="removeFromCart(item)">Cancel</a>
+            </div>
+            <!--div class="col">
               <i class="ion-edit ion-float-right ion-icon-medium positive" ng-click="editItem(item)"></i>
               <i class="ion-close-circled ion-icon-medium assertive" ng-click="removeFromCart(item)"></i>
-            </div>
+            </div-->
           </div>
         </div>
       </div>

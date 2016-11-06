@@ -6,21 +6,24 @@
 
 
 			$scope.customers=[];
-			$scope.keyword="";
-			$scope.onloading=false;
+			$scope.search={
+				keyword:"",
+			onloading:false
+			};
+
 			$scope.auth=dataTransferService.getData('auth');
 
-			var d=dataTransferService.getData('customer');
+			var d=dataTransferService.customer;
 
 
 			$scope.loadCustomers=function(){
-					if($scope.keyword=="" ||$scope.keyword==null){
+					if($scope.search.keyword=="" ||$scope.search.keyword==null){
 						return;
 					}
-					$scope.onloading=true;
-					ajaxService.get('search-customer/'+$scope.keyword,
+					$scope.search.onloading=true;
+					ajaxService.get('search-customer/'+$scope.search.keyword,
 					function(response){
-						$scope.onloading=false;
+						$scope.search.onloading=false;
 						if(response.data.customers.length>0){
 							$scope.customers=[];
 							for(var i in response.data.customers){
@@ -29,13 +32,13 @@
 						}
 
 					},function(resp){
-						$scope.onloading=false;
+						$scope.search.onloading=false;
 					})
 			}
 
 			$scope.selectcustomer=function(obj){
 
-					dataTransferService.setData('customer',obj);
+					dataTransferService.customer=obj;
 
 					$state.go('items');
 			}

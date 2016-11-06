@@ -13,27 +13,35 @@
 		'$ionicLoading',
     function($scope,$http,$state,ajaxService,$ionicHistory,dataTransferService,$ionicPopup,$ionicModal,$ionicLoading){
       $scope.cart=[];
-      $scope.customer=dataTransferService.getData('customer');
+      $scope.customer=dataTransferService.customer;
 			$scope.auth=dataTransferService.getData('auth');
-      $scope.$on('$ionicView.beforeEnter', function() {
-					$scope.cart=dataTransferService.getData('cart');
-					$scope.customer=dataTransferService.getData('customer');
-            if($scope.cart==undefined || $scope.cart==null || typeof $scope.cart!=='object'  ||$scope.cart.length<1){
-              $ionicPopup.show({
-                title: 'Empty Order!',
-                template: 'order should have atleast one item !',
-                buttons: [{
-                  text: 'Back',
-                  type:'button-positive',
-                  onTap: function(e) {
-                    $ionicHistory.goBack();
-                  }
-                 }]
-              })
-            }
-        });
+			$scope.cart=dataTransferService.cart;
+			$scope.selectedItem=null;
 
-				$scope.showerror={
+			$ionicModal.fromTemplateUrl('templates/models/orderSuccess.html',{
+				scope: $scope,
+				animation:'slide-in-up',
+			}).then(function(modal){
+				 $scope.orderSuccess= modal;
+			 });
+
+			//  $ionicModal.fromTemplateUrl('templates/models/edititem.html',{
+			// 	scope:$scope,
+			// 	animation:'slide-in-up',
+			//  }).then(function(modal){
+			// 	 $scope.cartpopup= modal;
+			//  });
+
+			if($scope.cart==null || $scope.cart.length<1){
+				$scope.cart=[];
+				$scope.totalPrice=0;
+			}else{
+				for(var i in $scope.cart){
+					dataTransferService.totalPrice+=($scope.cart[i].wsale*$scope.cart[i].amount);
+				}
+			}
+
+			$scope.showerror={
  				 show:false,
  				 message:''
  			 }
@@ -43,37 +51,57 @@
 				 message:''
 			 }
 
-				$ionicModal.fromTemplateUrl('templates/models/edititem.html',{
-					scope: $scope,
-					animation: 'slide-in-up',
-				}).then(function(modal) {
-					 $scope.cartpopup= modal;
-				 });
 
-				$scope.goBack=function(){$ionicHistory.goBack();}
+
+				$scope.goBack=function(){
+					$ionicHistory.goBack();
+				}
+
 				$scope.saveToCart=function(obj){
 					if(obj.amount==undefined || obj.amount<1){
  					 		$scope.showerror.show=true;
  					 		$scope.showerror.message="Empty order!"
  					  	return;
  				 	}
+					dataTransferService.totalPrice=0;
+					for(var j in dataTransferService.cart){
+						if(dataTransferService.cart[j].id==obj.id){
+							dataTransferService.cart[j]=obj;
 
-					for(var j in $scope.cart){
-						if($scope.cart[j].id==obj.id){
-							$scope.cart[j]=obj;
-							break;
 						}
+						dataTransferService.totalPrice+=(dataTransferService.cart[j].wsale*dataTransferService.cart[j].amount);
 					}
+					//dataTransferService.totalPrice=$scope.totalPrice;
 
-					$scope.cartpopup.hide();
- 				  $scope.selectedItme=null;
+					$scope.orderSuccess.hide();
+ 				  $scope.selectedItem=null;
 				}
 
+				$scope.$watch(
+					function(){
+						return dataTransferService.totalPrice;
+					},
+					function(newvla,oldval){
+						$scope.totalPrice=dataTransferService.totalPrice;
+					},true
+				);
+
+				$scope.$watch(
+					function(){ return dataTransferService.cart},
+					function(newVal,oldVal){
+						$scope.cart=dataTransferService.cart;
+					},true
+				);
+
 				$scope.removeFromCart=function(obj){
-					for(var j in $scope.cart){
-						if($scope.cart[j].id==obj.id){
-							$scope.cart.splice(j,1);
-							if($scope.cart.length<1){
+					for(var j in dataTransferService.cart){
+						if(dataTransferService.cart[j].id==obj.id){
+							dataTransferService.totalPrice-=obj.wsale*obj.amount;
+							dataTransferService.cart.splice(j,1);
+
+							if(dataTransferService.cart.length<1){
+								dataTransferService.totalPrice=0;
+								$ionicHistory.clearCache();
 								$state.go('items');
 							}
 							break;
@@ -81,21 +109,16 @@
 					}
 				}
 
-				$scope.gotomain=function(){
-					 $scope.orderSuccess.hide();
-					 dataTransferService.setData('cart',[]);
-					 dataTransferService.setData('customer',null);
+				// $scope.gotomain=function(){
+				//
+				// 	 dataTransferService.cart=[];
+				// 	 dataTransferService.customer=null;
+				// 	 dataTransferService.totalPrice=0;
+				// 	 $ionicHistory.clearCache();
+				// 	$state.go('customers');
+				// }
 
-					 $ionicHistory.clearCache();
-					$state.go('customers');
-				}
 
-				$ionicModal.fromTemplateUrl('templates/models/orderSuccess.html',{
-					scope: $scope,
-					animation: 'slide-in-up',
-				}).then(function(modal) {
-					 $scope.orderSuccess= modal;
-				 });
 
 				$scope.placeOrder=function(){
 
@@ -110,7 +133,11 @@
 								text: 'Back',
 								type:'button-positive',
 								onTap: function(e) {
-									$state.go('items');
+										 dataTransferService.cart=[];
+										 dataTransferService.customer=null;
+										 dataTransferService.totalPrice=0;
+										 $ionicHistory.clearCache();
+										$state.go('customers');
 								}
 							 }]
 						});
@@ -119,15 +146,32 @@
 					}
 					$ionicLoading.show();
 					ajaxService.post('place-order',{
-						'customerid':parseInt($scope.customer.CustomerID),
+						'customerid':parseInt(dataTransferService.customer.CustomerID),
 						'userid':$scope.auth.id,
-						'cart':$scope.cart
+						'cart':dataTransferService.cart
 					},function(response){
+							dataTransferService.cart=[];
+							dataTransferService.totalPrice=0;
+
+						  dataTransferService.customer=null;
 							$ionicLoading.hide();
 						 if(response.data.succsess){
-							 $scope.orderSuccess.show();
-							 	$scope.cart=[];
-		 						dataTransferService.setData('cart',$scope.cart);
+							 $ionicPopup.show({
+	 							title: 'Order Success !',
+	 							template: '<p class="ion-error-msg">Success</p>',
+	 							buttons: [{
+	 								text: 'Go To main',
+	 								type:'button-positive',
+	 								onTap: function(e) {
+
+	 									$state.go('customers');
+	 								}
+	 							 }]
+	 						});
+							 //$scope.orderSuccess.show();
+							 	//dataTransferService.cart=[];
+
+
 						 }else{
 							 $ionicPopup.show({
 								 title: 'Internal Server Issue!',
@@ -161,18 +205,20 @@
 
 				$scope.cancelEdit=function(){
 					$scope.selectedItem=null;
-					$scope.cartpopup.hide();
+					 $scope.orderSuccess.hide();
+					//$scope.cartpopup.hide();
 				}
+
         $scope.editItem=function(item){
 						$scope.selectedItem=item;
-						$scope.cartpopup.show();
+						$scope.orderSuccess.show();
         }
 
 				$scope.cancelOrder=function(){
-					$scope.cart=[];
+					dataTransferService.cart=[];
+					dataTransferService.totalPrice=0;
 					$ionicHistory.clearCache();
-					dataTransferService.setData('cart',[]);
-					$ionicHistory.goBack();
+					$state.go('items');
 				}
 
 

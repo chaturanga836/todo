@@ -1,5 +1,5 @@
 
-<ion-pane ng-controller="ItemsController">
+<ion-pane>
   <ion-header-bar class="bar-stable item-input-inset">
     <a class="button icon-left ion-ios-arrow-back button-clear button-dark" ng-click="goBack()"></a>
       <h6 class="title" ng-if="!search.show">{{customer.CusName}}</h6>
@@ -17,51 +17,43 @@
           <div class="col">Total Price <i class="balanced">{{ totalPrice | currency:"Rs: "}}<i></div>
         </div>
 </div>
-<ion-content class="has-footer">
+<ion-content class="has-header has-subheader has-footer" on-scroll="getScrolPosition()" id="itemWindwo89">
 
 
-<center ng-if="onloading"><ion-spinner class="spinner-calm"></ion-spinner></center>
+
     <div class="list list-inset">
+
+      <ul class="list">
+        <li class="item" ng-repeat="item in items" ng-click="selectItem(item)">
+          <b ng-class="{'balanced':item.Bonus>0}" >{{item.name}}</b>
+        </li>
+      </ul>
       <div class="card" ng-if="customers.length<1">
         <div class="item item-text-wrap">
           Search Items!
         </div>
       </div>
-      <div class="card" ng-repeat="item in items">
+      <center ng-if="search.onloading"><ion-spinner class="spinner-calm"></ion-spinner></center>
+      <!--div class="card" ng-repeat="item in items">
         <div class="item item-text-wrap" ng-click="selectItem(item)">
           <div class="row">
-            <div class="col">
-              <b class="positive">ProductID</b>:<br/>
-              <b class="positive">Name</b>:<br/>
-              <b class="positive">WS Price</b>:
-            </div>
            <div class="col">
-             <i class="balanced">{{item.id}}</i><br/>
              <i class="balanced">{{item.name}}</i><br/>
-             <i class="balanced">{{item.wsale}}</i>
            </div>
          </div>
         </div>
-      </div>
+      </div-->
 
     </div>
   </ion-content>
   <ion-footer-bar class="bar-light" ng-if="cart.length>0">
     <div class="buttons  balanced">
-      <button class="button button-positive"  ng-click="toCart()">To Cart</button>
+      <button class="button button-positive"  ng-click="toCart()">To Order</button>
     </div>
-    <h4 class="title"><i class="balanced">Cart:</i><b class="assertive">{{cart.length}}</b></h4>
+    <h4 class="title"><i class="balanced">Items:</i><ion-badge color="secondary">{{cart.length}}</ion-badge></h4>
     <div class="buttons assertive">
       <button class="button button-assertive" ng-click="clearCart()">Clear Cart</button>
     </div>
-    <!--div class="row" ng-if="cart.length>0">
-      <div class="col col-50">
-        <i class="ion-checkmark-circled ion-icon-medium balanced ion-float-right" ng-click="toCart()"></i>
-      </div>
-      <div class="col col-50">
-        <i class="ion-close-circled ion-icon-medium assertive" ng-click="clearCart()"></i>
-      </div>
-    </div-->
   </ion-footer-bar>
 
 
