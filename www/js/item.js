@@ -28,13 +28,15 @@
 
        $scope.items=[];
 			 var page=1;
+			 var prev=0,curr=0;
 			 $scope.cart=[];
 			 $scope.totalPrice=0;
 			 $scope.selectedItme=null;
-			 $scope.onloading=false;
+			 //$scope.onloading=false;
 			 $scope.search={
+				 onloading:false,
 				 keyword:'',
-				 show:false
+				 show:false,
 			 }
 
 			$scope.customer=dataTransferService.customer;
@@ -51,22 +53,23 @@
 			);
 
 			var awtItem=function(){
-				if($scope.onloading){
+				if($scope.search.onloading){
 					return;
 				}
-				$scope.onloading=true;
+				$scope.search.onloading=true;
 				ajaxService.get('get-all-items/'+page,
 					 function(response){
-							$scope.onloading=false;
+							$scope.search.onloading=false;
 						 for(var i in response.data.items){
 							 dataTransferService.availableItems.push(response.data.items[i])
 							 $scope.items.push(response.data.items[i]);
 						 }
 						 if(response.data.items.length>0){
+
 							 page+=1;
 						 }
 					 },
-					 function(response){ $scope.onloading=false;}
+					 function(response){ $scope.search.onloading=false;}
 				 );
 			}
 			awtItem();
@@ -74,8 +77,15 @@
 
 
 			$scope.getScrolPosition=function(){
-				if($ionicScrollDelegate.getScrollPosition().top>=$ionicScrollDelegate.getScrollView().__maxScrollTop){
-					awtItem();
+				prev=curr;
+				curr=$ionicScrollDelegate.getScrollPosition().top;
+
+				if((curr-10)>=$ionicScrollDelegate.getScrollView().__maxScrollTop){
+					if(curr>prev){
+						
+							awtItem();
+					}
+
 				}
 
 			}

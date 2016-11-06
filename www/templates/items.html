@@ -22,29 +22,19 @@
 
 
     <div class="list list-inset">
-
-      <ul class="list">
-        <li class="item" ng-repeat="item in items" ng-click="selectItem(item)">
-          <b ng-class="{'balanced':item.Bonus>0}" >{{item.name}}</b>
-        </li>
-      </ul>
       <div class="card" ng-if="customers.length<1">
         <div class="item item-text-wrap">
           Search Items!
         </div>
       </div>
-      <center ng-if="search.onloading"><ion-spinner class="spinner-calm"></ion-spinner></center>
-      <!--div class="card" ng-repeat="item in items">
-        <div class="item item-text-wrap" ng-click="selectItem(item)">
-          <div class="row">
-           <div class="col">
-             <i class="balanced">{{item.name}}</i><br/>
-           </div>
-         </div>
-        </div>
-      </div-->
+      <ul class="list">
+        <li class="item" ng-repeat="item in items" ng-click="selectItem(item)">
+          <b ng-class="{'balanced':item.Bonus>0}" >{{item.name}}</b>
+        </li>
+      </ul>
 
     </div>
+    <center ng-if="search.onloading"><ion-spinner class="spinner-calm"></ion-spinner></center>
   </ion-content>
   <ion-footer-bar class="bar-light" ng-if="cart.length>0">
     <div class="buttons  balanced">
