@@ -36,6 +36,10 @@
 					})
 			}
 
+			$scope.viewReport=function(){
+					$state.go('report');
+			}
+
 			$scope.selectcustomer=function(obj){
 
 					dataTransferService.customer=obj;
@@ -44,5 +48,7 @@
 			}
 
 		}]);
+
+
 
 })(window);

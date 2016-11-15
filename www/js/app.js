@@ -38,12 +38,12 @@ angular.module('starter', ['ionic','satellizer'])
 })
 
 .constant('ApiEndpoint', {
-  url: 'http://localhost:8000/api/'
+  url: 'http://primium.senitlo.com/api/'
 })
 
 .config(function($stateProvider, $urlRouterProvider,$httpProvider,$authProvider) {
 
-  $authProvider.loginUrl = 'http://localhost:8000/api/login';
+  $authProvider.loginUrl = 'http://primium.senitlo.com/api/login';
 
   $urlRouterProvider.otherwise('/auth');
         $stateProvider
@@ -66,12 +66,26 @@ angular.module('starter', ['ionic','satellizer'])
                 url: "/cart",
                 templateUrl: "templates/cart.html",
                 controller: "CartController"
+
             })
             .state('report', {
                 url: "/report",
-                templateUrl: "templates/myreport.html",
-                controller: "ReportController"
+                templateUrl: "templates/myreport.html"
+            })
+
+            .state('month-report',{
+              url:'/monthreport',
+              templateUrl:"templates/reports/month.html",
+              controller: "monthlyReportController"
+            })
+
+            .state('today-report',{
+              url:'/todayreport',
+              templateUrl:"templates/reports/today.html",
+              controller: "todayReportController"
+
             });
+
         $urlRouterProvider.otherwise('/');
         $httpProvider.defaults.useXDomain = true;
         $httpProvider.defaults.withCredentials = true;

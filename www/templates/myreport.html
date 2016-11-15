@@ -1,21 +1,20 @@
 <ion-pane>
   <ion-header-bar class="bar-stable item-input-inset">
-    <a class="button icon-left ion-ios-arrow-back button-clear button-dark" ng-click="goBack()"></a>
+    <a class="button icon-left ion-ios-arrow-back button-clear button-dark" href="#/customers"></a>
       <h6 class="title">Report</h6>
   </ion-header-bar>
   <div class="bar bar-subheader">
-    <div class="tabs">
-      <a class="tab-item">
-        Today
-      </a>
-      <a class="tab-item">
-        This Month
-      </a>
-   </div>
  </div>
 
   <ion-content class="has-header has-subheader has-footer">
-
+    <ion-list>
+      <a href="#/todayreport"><ion-item>
+        Today report
+      </ion-item></a>
+      <a href="#/monthreport"><ion-item>
+        Month report
+      </ion-item></a>
+    </ion-list>
   </ion-content>
 <ion-footer-bar class="bar-light">
   <
