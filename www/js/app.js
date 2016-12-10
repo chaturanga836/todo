@@ -38,12 +38,12 @@ angular.module('starter', ['ionic','satellizer'])
 })
 
 .constant('ApiEndpoint', {
-  url: 'http://primium.senitlo.com/api/'
+  url: 'http://nc.senitlo.com/api/'
 })
 
 .config(function($stateProvider, $urlRouterProvider,$httpProvider,$authProvider) {
 
-  $authProvider.loginUrl = 'http://primium.senitlo.com/api/login';
+  $authProvider.loginUrl = 'http://nc.senitlo.com/api/login';
 
   $urlRouterProvider.otherwise('/auth');
         $stateProvider
